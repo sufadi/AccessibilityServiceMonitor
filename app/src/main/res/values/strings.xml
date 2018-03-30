@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Android辅助功能助手</string>
+    <string name="settings">打开辅助功能设置界面</string>
+    <string name="introduce">1. Keep App 的自动点赞器;\n 2.抢红包的功能还没加上去</string>
+</resources>
