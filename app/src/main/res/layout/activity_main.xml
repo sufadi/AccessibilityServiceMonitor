@@ -10,14 +10,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.fadi.forestautoget.MainActivity">
 
-    <TextView
+    <Switch
+        android:id="@+id/sw_keep"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/introduce" />
+        android:text="@string/keep_title"/>
 
     <Button
         android:id="@+id/btn_settings"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/settings" />
