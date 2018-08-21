@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TimePicker;
 
 import com.fadi.forestautoget.service.AccessibilityServiceMonitor;
 import com.fadi.forestautoget.util.AccessibilitUtil;
@@ -15,11 +16,14 @@ import com.fadi.forestautoget.util.ShareUtil;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener , CompoundButton.OnCheckedChangeListener, TimePicker.OnTimeChangedListener {
 
     private ShareUtil mShareUtil;
 
+    private TimePicker timepick;
+
     private Switch sw_keep;
+    private Switch sw_alipay_forest;
     private Button btnSettings;
 
     @Override
@@ -39,17 +43,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
+        timepick = (TimePicker) findViewById(R.id.timepick);
         sw_keep = (Switch) findViewById(R.id.sw_keep);
         btnSettings = (Button) findViewById(R.id.btn_settings);
+        sw_alipay_forest = (Switch) findViewById(R.id.sw_alipay_forest);
     }
 
     private void initVaule() {
         mShareUtil = new ShareUtil(this);
+
+        timepick.setIs24HourView(true);
+        timepick.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
     }
 
     private void initListener() {
-        sw_keep.setOnCheckedChangeListener(this);
         btnSettings.setOnClickListener(this);
+        sw_keep.setOnCheckedChangeListener(this);
+        sw_alipay_forest.setOnCheckedChangeListener(this);
+        timepick.setOnTimeChangedListener(this);
     }
 
     @Override
@@ -68,7 +79,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btnSettings.setEnabled(true);
         }
 
-        sw_keep.setChecked(mShareUtil.getBoolean(Config.APP_KEEP, false));
+        sw_keep.setChecked(mShareUtil.getBoolean(Config.APP_KEEP, true));
+        sw_alipay_forest.setChecked(mShareUtil.getBoolean(Config.APP_ALIPAY_FOREST, true));
+
+        int hour = mShareUtil.getInt(Config.KEY_HOUR, -1);
+        int minute = mShareUtil.getInt(Config.KEY_MINUTE, -1);
+
+        if (hour == -1 && minute == -1) {
+            // do nothing
+        } else {
+            timepick.setHour(hour);
+            timepick.setMinute(minute);
+        }
     }
 
     private void startService() {
@@ -84,10 +106,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mShareUtil.setShare(Config.APP_KEEP, b);
                 Log.d(Config.TAG, "Keep is " + b);
                 break;
+            case R.id.sw_alipay_forest:
+                mShareUtil.setShare(Config.APP_ALIPAY_FOREST, b);
+                Log.d(Config.TAG, "AlipayForest is " + b);
+                break;
         }
 
         Intent intent = new Intent(this, AccessibilityServiceMonitor.class);
         intent.setAction(AccessibilityServiceMonitor.ACTION_UPDATE_SWITCH);
         MainActivity.this.startService(intent);
+    }
+
+    @Override
+    public void onTimeChanged(TimePicker timePicker, int hourOfDay, int minute) {
+        if (mShareUtil != null) {
+            mShareUtil.setShare(Config.KEY_HOUR, hourOfDay);
+            mShareUtil.setShare(Config.KEY_MINUTE, minute);
+        }
     }
 }

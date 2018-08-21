@@ -3,5 +3,5 @@
     android:accessibilityEventTypes="typeAllMask"
     android:accessibilityFeedbackType="feedbackGeneric"
     android:canRetrieveWindowContent="true"
-    android:description="@string/introduce"
+    android:description="@string/readme"
     android:notificationTimeout="100" />

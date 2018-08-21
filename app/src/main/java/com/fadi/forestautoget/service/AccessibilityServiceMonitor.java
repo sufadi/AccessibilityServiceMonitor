@@ -19,7 +19,8 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
 
     public static final String ACTION_UPDATE_SWITCH = "action_update_switch";
 
-    private boolean isKeepEnable = false;
+    private boolean isKeepEnable = true;
+    private boolean isAlipayForest = true;
 
     @Override
     public void onCreate() {
@@ -51,8 +52,9 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
         AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
         serviceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
         serviceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
-        serviceInfo.packageNames = new String[]{"com.gotokeep.keep"};// 监控的app
+        serviceInfo.packageNames = new String[]{"com.gotokeep.keep", "com.eg.android.AlipayGphone"};// 监控的app
         serviceInfo.notificationTimeout = 100;
+        serviceInfo.flags = serviceInfo.flags | AccessibilityServiceInfo.FLAG_REQUEST_ENHANCED_WEB_ACCESSIBILITY;
         setServiceInfo(serviceInfo);
     }
 
@@ -61,12 +63,18 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
         int eventType = event.getEventType();
         String packageName = event.getPackageName().toString();
         String className = event.getClassName().toString();
-        // Log.d(TAG,"event = " + event.toString() );
+        Log.d(Config.TAG,"packageName = " + packageName + ", className = " + className);
 
         switch (eventType) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
             case AccessibilityEvent.TYPE_VIEW_SCROLLED:
-                keepPolicy(packageName, className);
+                if (isKeepEnable) {
+                    KeepAppMonitor.policy(getRootInActiveWindow(), packageName, className);
+                }
+
+                if (isAlipayForest) {
+                    AlipayForestMonitor.policy(getRootInActiveWindow(), packageName, className);
+                }
                 break;
 
         }
@@ -77,41 +85,14 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
 
     }
 
+    /**
+     * 更新开关状态
+     */
     private void updateSwitchStatus() {
         ShareUtil mShareUtil = new ShareUtil(this);
-        isKeepEnable = mShareUtil.getBoolean(Config.APP_KEEP, false);
+        isKeepEnable = mShareUtil.getBoolean(Config.APP_KEEP, true);
+        isAlipayForest = mShareUtil.getBoolean(Config.APP_ALIPAY_FOREST, true);
     }
 
-    private void keepPolicy(String packageName, String className) {
-        if (isKeepEnable == false) {
-            return;
-        }
-
-        if ("com.gotokeep.keep".equals(packageName) && ("android.support.v7.widget.RecyclerView".equals(className))) {
-            // 关注界面的点赞
-            keepAppPraise("com.gotokeep.keep:id/item_cell_praise_container");
-
-            // 好友界面的点赞
-            keepAppPraise("com.gotokeep.keep:id/stroke_view");
-
-            // 热点界面的点赞
-            keepAppPraise("com.gotokeep.keep:id/layout_like");
-        }
-    }
-
-    private void keepAppPraise(String id) {
-        AccessibilityNodeInfo nodeInfo = getRootInActiveWindow();
-
-        if (nodeInfo != null) {
-            // 该界面下所有 ViewId 节点
-            List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByViewId(id);
-            for (AccessibilityNodeInfo item : list) {
-                if (item.isClickable()) {
-                    Log.d(TAG, "keepAppPraise = " + item.getClassName());
-                    item.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                }
-            }
-        }
-    }
 
 }
