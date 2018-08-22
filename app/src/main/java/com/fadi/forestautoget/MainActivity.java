@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mShareUtil != null) {
             mShareUtil.setShare(Config.KEY_HOUR, hourOfDay);
             mShareUtil.setShare(Config.KEY_MINUTE, minute);
+
+            MyApplication.startAlarmTask(MainActivity.this);
         }
     }
 }

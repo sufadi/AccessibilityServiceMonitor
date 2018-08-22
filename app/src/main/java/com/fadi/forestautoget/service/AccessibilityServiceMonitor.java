@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import com.fadi.forestautoget.MyApplication;
 import com.fadi.forestautoget.util.Config;
 import com.fadi.forestautoget.util.ShareUtil;
 
@@ -18,6 +19,7 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
     private static final String TAG = AccessibilityServiceMonitor.class.getSimpleName();
 
     public static final String ACTION_UPDATE_SWITCH = "action_update_switch";
+    public static final String ACTION_ALAM_TIMER= "action_alarm_timer";
 
     private boolean isKeepEnable = true;
     private boolean isAlipayForest = true;
@@ -39,6 +41,8 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
 
         if (ACTION_UPDATE_SWITCH.equals(action)) {
             updateSwitchStatus();
+        } else if (ACTION_ALAM_TIMER.equals(action)) {
+            MyApplication.startAlarmTask(this);
         }
 
         return super.onStartCommand(intent, flags, startId);
