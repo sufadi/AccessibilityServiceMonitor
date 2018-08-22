@@ -3,15 +3,16 @@ package com.fadi.forestautoget.service;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityNodeInfo;
 
 import com.fadi.forestautoget.MyApplication;
 import com.fadi.forestautoget.util.Config;
 import com.fadi.forestautoget.util.ShareUtil;
 
-import java.util.List;
 
 
 public class AccessibilityServiceMonitor extends AccessibilityService {
@@ -22,7 +23,14 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
     public static final String ACTION_ALAM_TIMER= "action_alarm_timer";
 
     private boolean isKeepEnable = true;
+
     private boolean isAlipayForest = true;
+    private boolean isEnterAlipayForest = false;
+
+
+    private H mHandle = new H();
+    private static final int MSG_DELAY_ENTER_FOREST = 0;
+    private static final int DEFAULT_DELAY_TIME = 5 * 1000;
 
     @Override
     public void onCreate() {
@@ -43,6 +51,8 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
             updateSwitchStatus();
         } else if (ACTION_ALAM_TIMER.equals(action)) {
             MyApplication.startAlarmTask(this);
+
+            startUI();
         }
 
         return super.onStartCommand(intent, flags, startId);
@@ -67,7 +77,7 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
         int eventType = event.getEventType();
         String packageName = event.getPackageName().toString();
         String className = event.getClassName().toString();
-        Log.d(Config.TAG,"packageName = " + packageName + ", className = " + className);
+        //Log.d(Config.TAG,"packageName = " + packageName + ", className = " + className);
 
         switch (eventType) {
             case AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED:
@@ -78,6 +88,10 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
 
                 if (isAlipayForest) {
                     AlipayForestMonitor.policy(getRootInActiveWindow(), packageName, className);
+
+                    if (isEnterAlipayForest) {
+                        AlipayForestMonitor.enterForestUI(getRootInActiveWindow());
+                    }
                 }
                 break;
 
@@ -89,6 +103,24 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
 
     }
 
+    private class H extends Handler {
+
+        public H() {
+            super(Looper.getMainLooper());
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_DELAY_ENTER_FOREST:
+                    isEnterAlipayForest = false;
+                    break;
+            }
+        }
+    }
+
+
     /**
      * 更新开关状态
      */
@@ -98,5 +130,15 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
         isAlipayForest = mShareUtil.getBoolean(Config.APP_ALIPAY_FOREST, true);
     }
 
+    /**
+     * 启动UI界面
+     */
+    private void startUI() {
+        if (isAlipayForest) {
+            AlipayForestMonitor.startAlipay(this);
 
+            isEnterAlipayForest = true;
+            mHandle.sendEmptyMessageDelayed(MSG_DELAY_ENTER_FOREST, DEFAULT_DELAY_TIME);
+        }
+    }
 }
