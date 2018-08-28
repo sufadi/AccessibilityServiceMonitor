@@ -11,3 +11,6 @@ AccessibilityService 进行蚂蚁森林能量收集 demo
 
 Android辅助工具助手-keep 自动点赞器
 - https://blog.csdn.net/su749520/article/details/79760792
+
+AccessibilityService 手机联通营业厅自动签到器
+- https://blog.csdn.net/su749520/article/details/82153456
