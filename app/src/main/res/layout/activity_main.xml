@@ -48,6 +48,12 @@
             android:layout_height="wrap_content"
             android:text="@string/keep_title"/>
 
+        <Switch
+            android:id="@+id/sw_liangtong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/liangtong_title"/>
+
         <TextView
             android:id="@+id/tv_readme"
             android:layout_width="match_parent"

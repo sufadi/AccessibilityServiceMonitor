@@ -7,6 +7,8 @@ public class Config {
 
     public static final String APP_ALIPAY_FOREST = "alipay_forest";
 
+    public static final String APP_LIANG_TONG = "liang_tong";
+
     public  static final String KEY_HOUR = "key_hour";
 
     public  static final String KEY_MINUTE = "key_minute";

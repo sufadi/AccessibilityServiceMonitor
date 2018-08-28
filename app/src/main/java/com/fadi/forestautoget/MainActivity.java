@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TimePicker timepick;
 
     private Switch sw_keep;
+    private Switch sw_liangtong;
     private Switch sw_alipay_forest;
     private Button btnSettings;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initView() {
         timepick = (TimePicker) findViewById(R.id.timepick);
         sw_keep = (Switch) findViewById(R.id.sw_keep);
+        sw_liangtong = (Switch) findViewById(R.id.sw_liangtong);
         btnSettings = (Button) findViewById(R.id.btn_settings);
         sw_alipay_forest = (Switch) findViewById(R.id.sw_alipay_forest);
     }
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initListener() {
         btnSettings.setOnClickListener(this);
         sw_keep.setOnCheckedChangeListener(this);
+        sw_liangtong.setOnCheckedChangeListener(this);
         sw_alipay_forest.setOnCheckedChangeListener(this);
         timepick.setOnTimeChangedListener(this);
     }
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         sw_keep.setChecked(mShareUtil.getBoolean(Config.APP_KEEP, true));
         sw_alipay_forest.setChecked(mShareUtil.getBoolean(Config.APP_ALIPAY_FOREST, true));
+        sw_liangtong.setChecked(mShareUtil.getBoolean(Config.APP_LIANG_TONG,true));
 
         int hour = mShareUtil.getInt(Config.KEY_HOUR, -1);
         int minute = mShareUtil.getInt(Config.KEY_MINUTE, -1);
@@ -109,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.sw_alipay_forest:
                 mShareUtil.setShare(Config.APP_ALIPAY_FOREST, b);
                 Log.d(Config.TAG, "AlipayForest is " + b);
+                break;
+            case R.id.sw_liangtong:
+                mShareUtil.setShare(Config.APP_LIANG_TONG, b);
+                Log.d(Config.TAG, "LiangTong is " + b);
                 break;
         }
 
