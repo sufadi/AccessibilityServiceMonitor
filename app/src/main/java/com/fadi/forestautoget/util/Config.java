@@ -9,7 +9,9 @@ public class Config {
 
     public static final String APP_LIANG_TONG = "liang_tong";
 
-    public  static final String KEY_HOUR = "key_hour";
+    public static final String KEY_NEW_DAY = "key_new_day";
 
-    public  static final String KEY_MINUTE = "key_minute";
+    public static final String KEY_HOUR = "key_hour";
+
+    public static final String KEY_MINUTE = "key_minute";
 }
