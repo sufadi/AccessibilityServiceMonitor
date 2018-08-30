@@ -2,9 +2,10 @@
     <string name="app_name">Android辅助功能助手</string>
     <string name="settings">打开辅助功能设置界面</string>
     <string name="keep_title">Keep App 的自动点赞器</string>
+    <string name="wechat_motion_title">微信运动排行榜自动点赞器</string>
     <string name="liangtong_title">联通营业厅的自动签到器</string>
     <string name="alipay_forest_title">支付宝的蚂蚁森林自动采集器</string>
     <string name="introduce">1.Keep 的自动点赞功能 \n2.支付宝的蚂蚁森林自动采集器</string>
     <string name="time_settings">设置定时器时间</string>
-    <string name="readme">"使用说明书：\n 1.基于Accessibility开发，故需要打开辅助功能 \n 2. 请在手机管家或应用管理设置 \n 2.1 允许应用自启动(防止被杀) \n 2.2 允许应用后台运行(防止被杀) \n 2.3 允许应用正常唤醒(防止定时器不准时) \n 3.本工具可能随着第三方应用更新而失效，这里仅仅提供demo参考 \n 4.定时时间：执行对应指令 \n 5. Kepp 点赞器，主要是进入Keep界面，遇到大拇指图标自动点赞 \n6.支付宝蚂蚁森林主要是定时收取能量（不想被好友偷能量，但是无法偷好友的能量，支付宝限制该行为）\n7. 联通APP自动签到器"</string>
+    <string name="readme">"使用说明书：\n 1.基于Accessibility开发，故需要打开辅助功能 \n 2. 请在手机管家或应用管理设置 \n 2.1 允许应用自启动(防止被杀) \n 2.2 允许应用后台运行(防止被杀) \n 2.3 允许应用正常唤醒(防止定时器不准时) \n 3.本工具可能随着第三方应用更新而失效，这里仅仅提供demo参考 \n 4.定时时间：执行对应指令 \n 5. Kepp 点赞器，主要是进入Keep界面，遇到大拇指图标自动点赞 \n6.支付宝蚂蚁森林主要是定时收取能量（不想被好友偷能量，但是无法偷好友的能量，支付宝限制该行为）\n7. 联通APP自动签到器 \n 微信运动排行榜自动点赞器"</string>
 </resources>

@@ -28,6 +28,10 @@ public class LiangTongMonitor {
             return;
         }
 
+        if (false == "com.sinovatech.unicom.ui".equals(packageName)) {
+            return;
+        }
+
         CommonUtil.clickBtnByResId(nodeInfo, "com.sinovatech.unicom.ui:id/home_header_long_qiandao_image");
     }
 

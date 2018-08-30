@@ -43,6 +43,11 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
      */
     private boolean isLiangTongEnable = true;
 
+    /**
+     * 微信运动的自动点赞器
+     */
+    private boolean isWeChatMotionEnable = true;
+
     private H mHandle = new H();
     private static final int MSG_DELAY_ENTER_FOREST = 0;
     private static final int MSG_DELAY_ENTER_LIANGTONG = 1;
@@ -85,7 +90,7 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
         AccessibilityServiceInfo serviceInfo = new AccessibilityServiceInfo();
         serviceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
         serviceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
-        serviceInfo.packageNames = new String[]{"com.gotokeep.keep", "com.eg.android.AlipayGphone", "com.sinovatech.unicom.ui"};// 监控的app
+        serviceInfo.packageNames = new String[]{"com.gotokeep.keep", "com.eg.android.AlipayGphone", "com.sinovatech.unicom.ui", "com.tencent.mm"};// 监控的app
         serviceInfo.notificationTimeout = 100;
         serviceInfo.flags = serviceInfo.flags | AccessibilityServiceInfo.FLAG_REQUEST_ENHANCED_WEB_ACCESSIBILITY;
         setServiceInfo(serviceInfo);
@@ -119,6 +124,10 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
                     }
 
                     LiangTongMonitor.policy(getRootInActiveWindow(), packageName, className);
+                }
+
+                if (isWeChatMotionEnable) {
+                    WeChatMotionMonitor.policy(getRootInActiveWindow(), packageName, className);
                 }
                 break;
 
@@ -185,6 +194,7 @@ public class AccessibilityServiceMonitor extends AccessibilityService {
         isKeepEnable = mShareUtil.getBoolean(Config.APP_KEEP, true);
         isAlipayForest = mShareUtil.getBoolean(Config.APP_ALIPAY_FOREST, true);
         isLiangTongEnable = mShareUtil.getBoolean(Config.APP_LIANG_TONG, true);
+        isWeChatMotionEnable = mShareUtil.getBoolean(Config.APP_WECHART_MOTHION, true);
     }
 
     /**
